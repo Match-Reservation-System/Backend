@@ -1,7 +1,0 @@
-project setup
--TS
--Jasmine
--eslint/prettier
--express
--database (driver-migration)
--postgres connection
