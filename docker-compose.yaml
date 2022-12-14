@@ -1,0 +1,12 @@
+services:
+  db_dev:
+    image: postgres
+    ports:
+      - "${LC_DEV_PORT}:5432"
+    environment:
+      POSTGRES_PASSWORD: ${LC_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${LC_POSTGRES_USER}
+      POSTGRES_DB: ${LC_DEV_DB}
+
+
+      

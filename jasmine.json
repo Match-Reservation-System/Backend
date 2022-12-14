@@ -1,0 +1,9 @@
+{
+  "spec_dir": "dist/__tests__",
+  "spec_files": ["**/*[sS]pec.?(m)js"],
+  "helpers": ["../config/jasmine/**/*.?(m).js"],
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "random": false
+  }
+}
