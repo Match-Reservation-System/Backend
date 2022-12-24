@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import {Pool} from 'pg';
+import { Pool } from 'pg';
 
 const {
   LC_POSTGRES_USER,
@@ -12,20 +12,20 @@ const {
 } = process.env;
 
 const devConfig = {
-    user: LC_POSTGRES_USER,
-    password: LC_POSTGRES_PASSWORD,
-    host: LC_POSTGRES_HOST,
-    database: LC_DEV_DB,
-    port: parseInt(LC_DEV_PORT as string),
+  user: LC_POSTGRES_USER,
+  password: LC_POSTGRES_PASSWORD,
+  host: LC_POSTGRES_HOST,
+  database: LC_DEV_DB,
+  port: parseInt(LC_DEV_PORT as string),
 };
 const testConfig = {
-    user: LC_POSTGRES_USER,
-    password: LC_POSTGRES_PASSWORD,
-    host: LC_POSTGRES_HOST,
-    database: LC_TEST_DB,
-    port: parseInt(LC_TEST_PORT as string),
+  user: LC_POSTGRES_USER,
+  password: LC_POSTGRES_PASSWORD,
+  host: LC_POSTGRES_HOST,
+  database: LC_TEST_DB,
+  port: parseInt(LC_TEST_PORT as string),
 };
-
-const client = new Pool(devConfig);
+const config = process.env.ENV === 'test' ? testConfig : devConfig;
+const client = new Pool(config);
 
 export default client;

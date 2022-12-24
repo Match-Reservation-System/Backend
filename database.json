@@ -1,0 +1,19 @@
+{
+  "defaultEnv": { "ENV": "ENV" },
+  "dev": {
+    "driver": "pg",
+    "host": { "ENV": "LC_POSTGRES_HOST" },
+    "port": { "ENV": "LC_DEV_PORT" },
+    "database": { "ENV": "LC_DEV_DB" },
+    "user": { "ENV": "LC_POSTGRES_USER" },
+    "password": { "ENV": "LC_POSTGRES_PASSWORD" }
+  },
+  "test": {
+    "driver": "pg",
+    "host": { "ENV": "LC_POSTGRES_HOST" },
+    "port": { "ENV": "LC_TEST_PORT" },
+    "database": { "ENV": "LC_TEST_DB" },
+    "user": { "ENV": "LC_POSTGRES_USER" },
+    "password": { "ENV": "LC_POSTGRES_PASSWORD" }
+  }
+}
