@@ -7,7 +7,7 @@ this is the backend of the LC project
 1. **_Clone the repository_**
 
 ```bash
-git clone https://github.com/Ahmedmma72/LC-Project-Backend.git
+git clone https://github.com/Match-Reservation-System/Backend.git
 ```
 
 2. **_Go to the directory of the repository_**
