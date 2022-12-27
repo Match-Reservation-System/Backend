@@ -13,7 +13,7 @@ git clone https://github.com/Match-Reservation-System/Backend.git
 2. **_Go to the directory of the repository_**
 
 ```bash
-cd LC-Project-Backend
+cd Backend
 ```
 
 3. **install dependencies**

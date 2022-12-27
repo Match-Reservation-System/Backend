@@ -2,24 +2,19 @@ import express, { Request, Response } from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import router from './api/app.route';
+import morgan from 'morgan';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+if(process.env.ENV == 'dev') {
+  app.use(morgan('dev'));
+}
+
 
 app.use('/api', router);
-// app.get('/',async (req: Request, res: Response) => {
-//  try{
-//   const conn = await client.connect();
-//   const result = await conn.query('SELECT * FROM test');
-//   conn.release();
-//   res.status(200).json(result.rows);
-//  }catch(err: unknown){
-//     const typedError = err as Error;
-//     console.log(typedError?.message);
-//  }
-// });
 
 const port = process.env.LC_PORT || 3000;
 app.listen(port, () => {
