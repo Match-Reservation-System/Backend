@@ -1,5 +1,5 @@
 import client from '../../config/db/db';
-import { user } from '../../types/models/user';
+import { user } from '../types/models/user';
 
 class User {
   static async getUserByEmail(email: string): Promise<user | null> {
@@ -80,6 +80,25 @@ class User {
       throw new Error(`Could not delete user ${id}. Error: ${err}`);
     }
   }
+  static async updateUser(id: number,user: user): Promise<user> {
+    try {
+      const sql =
+        'UPDATE users SET first_name = $1, last_name = $2, password = $3, gender = $4, nationality = $5, birth_date = $6 WHERE id = $7 RETURNING id,first_name,last_name,gender,nationality,birth_date';
+      const result = await client.query(sql, [ 
+        user.first_name, 
+        user.last_name, 
+        user.password, 
+        user.gender,
+        user.nationality,
+        user.birth_date,
+        id
+      ]);
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not update user ${user.id}. Error: ${err}`);
+    }
+  }
+        
 }
 
 export default User;

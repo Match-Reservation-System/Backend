@@ -33,7 +33,6 @@ const deleteTicket = async (req: Request, res: Response) => {
 
 const getMatchTickets = async (req: Request, res: Response) => {
   try {
-    //TODO: check for auth user 
     const match_id = Number(req.params.match_id);
     const tickets = await Reservation.getReservationsByMatchId(match_id);
     res.json({tickets: tickets})

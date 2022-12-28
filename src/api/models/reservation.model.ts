@@ -1,34 +1,47 @@
 import client from '../../config/db/db';
-import { reservation } from '../../types/models/reservation';
-import ticketsRouter from '../routes/tickets.route';
+import { reservation } from '../types/models/reservation';
+
 
 class Reservation {
-
-  static async getReservationsByUserId(user_id: number): Promise<reservation[] | null> { try {
+  static async getReservationsByUserId(
+    user_id: number
+  ): Promise<reservation[] | null> {
+    try {
       const sql = 'SELECT * FROM reservations WHERE user_id = $1';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not get reservations for user_id ${user_id}. Error: ${err}`);
+      throw new Error(
+        `Could not get reservations for user_id ${user_id}. Error: ${err}`
+      );
     }
   }
 
-  static async getReservationsByMatchId(match_id: number): Promise<reservation[] | null> { try {
+  static async getReservationsByMatchId(
+    match_id: number
+  ): Promise<reservation[] | null> {
+    try {
       const sql = 'SELECT * FROM reservations WHERE match_id = $1';
       const result = await client.query(sql, [match_id]);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not get reservations for match_id ${match_id}. Error: ${err}`);
+      throw new Error(
+        `Could not get reservations for match_id ${match_id}. Error: ${err}`
+      );
     }
   }
 
-  static async getReservationById(ticket_id: number): Promise<reservation | null> {
+  static async getReservationById(
+    ticket_id: number
+  ): Promise<reservation | null> {
     try {
       const sql = 'select * FROM reservations WHERE id = $1';
       const result = await client.query(sql, [ticket_id]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not delete the reservation with id ${ticket_id}. Error: ${err}`);
+      throw new Error(
+        `Could not delete the reservation with id ${ticket_id}. Error: ${err}`
+      );
     }
   }
 
@@ -37,7 +50,9 @@ class Reservation {
       const sql = 'DELETE FROM reservations WHERE id = $1';
       const result = await client.query(sql, [ticket_id]);
     } catch (err) {
-      throw new Error(`Could not delete the reservation with id ${ticket_id}. Error: ${err}`);
+      throw new Error(
+        `Could not delete the reservation with id ${ticket_id}. Error: ${err}`
+      );
     }
   }
 
@@ -57,6 +72,5 @@ class Reservation {
     }
   }
 }
-
 
 export default Reservation;

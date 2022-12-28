@@ -1,6 +1,6 @@
 import joi from 'joi';
 import { admin, manager,fan } from '../../../roles/roles';
-import { user } from '../../../types/models/user';
+import { user } from '../../types/models/user';
 
 const validateSignupData = (signup: user) => {
     const schema = joi.object({
