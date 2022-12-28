@@ -2,10 +2,11 @@ import client from '../../config/db/db';
 import { match } from '../types/models/match';
 
 class Match {
+  
   static async createMatch(match: match): Promise<match> {
     try {
       const sql =
-        'INSERT INTO matches (stadium_id, date, home_team, away_team, main_referee, first_line_referee, second_line_referee, ticket_price) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id,role';
+        'INSERT INTO matches (stadium_id, date, home_team, away_team, main_referee, first_line_referee, second_line_referee, ticket_price) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id';
       const result = await client.query(sql, [
         match.stadium_id,
         match.date,
@@ -46,6 +47,20 @@ class Match {
     } catch (err) {
       throw new Error(
         `Could not get dates of the user with id ${user_id}. Error: ${err}`
+      );
+    }
+  }
+
+  static async getTeamMatches(
+    team_name: string
+  ): Promise<match[] | null> {
+    try {
+      const sql = 'select id, date FROM matches WHERE home_team = $1 OR away_team = $1';
+      const result = await client.query(sql, [team_name]);
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Could not get dates of the team with naem ${team_name}. Error: ${err}`
       );
     }
   }

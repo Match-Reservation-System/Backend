@@ -4,8 +4,6 @@ import verifyAuthToken from "../services/verifyAuth";
 import verifyRole from "../services/verifyRole";
 import { fan } from "../../roles/roles";
 
-//TODO: add authentication and authorization middlewares
-
 const customerRouter = Router();
 
 customerRouter.get('/fan/:user_id', verifyAuthToken, verifyRole(fan), getUserTickets);
