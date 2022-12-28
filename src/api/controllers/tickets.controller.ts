@@ -44,4 +44,17 @@ const getMatchTickets = async (req: Request, res: Response) => {
   }
 };
 
-export { getUserTickets, deleteTicket, getMatchTickets };
+const reserveTicket = async (req: Request, res: Response) => {
+  try {
+    //TODO: check for auth user 
+    req.body.user_id = 1;
+    const result = await Reservation.createReservation(req.body);
+    //TODO: check if in the bondries of the staduim
+    res.json({ticket_id: result.id});
+  } catch (err: unknown) {
+    const typedError = err as Error;
+    res.status(401).json({ error: typedError?.message });
+  }
+};
+
+export { getUserTickets, deleteTicket, getMatchTickets, reserveTicket };

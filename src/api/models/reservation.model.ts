@@ -44,17 +44,19 @@ class Reservation {
   static async createReservation(reservation: reservation) {
     try {
       const sql =
-        'INSERT INTO reservations (match_id, row, seat, user_id) VALUES($1, $2, $3, $4)';
+        'INSERT INTO reservations (match_id, row, seat, user_id) VALUES($1, $2, $3, $4) RETURNING id';
       const result = await client.query(sql, [
         reservation.match_id,
         reservation.row,
         reservation.seat,
         reservation.user_id,
       ]);
+      return result.rows[0];
     } catch (err) {
       throw new Error(`Could not add new reservation. Error: ${err}`);
     }
   }
 }
+
 
 export default Reservation;
