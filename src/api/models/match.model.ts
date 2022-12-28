@@ -23,6 +23,26 @@ class Match {
     }
   }
 
+  static async updateMatch(match: match) {
+    try {
+      const sql =
+        'UPDATE matches SET stadium_id = $2, date = $3, home_team = $4, away_team = $5, main_referee = $6, first_line_referee = $7, second_line_referee = $8, ticket_price = $9 WHERE id = $1';
+      const result = await client.query(sql, [
+        match.id,
+        match.stadium_id,
+        match.date,
+        match.home_team,
+        match.away_team,
+        match.main_referee,
+        match.first_line_referee,
+        match.second_line_referee,
+        match.ticket_price
+      ]);
+    } catch (err) {
+      throw new Error(`Could not update match. Error: ${err}`);
+    }
+  }
+
   static async getMatchById(
     match_id: number
   ): Promise<match | null> {
