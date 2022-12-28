@@ -4,16 +4,23 @@ import ticketsRouter from '../routes/tickets.route';
 
 class Reservation {
 
-  static async getReservationsByUserId(user_id: number): Promise<reservation[] | null> {
-    try {
+  static async getReservationsByUserId(user_id: number): Promise<reservation[] | null> { try {
       const sql = 'SELECT * FROM reservations WHERE user_id = $1';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not find any reservations for user_id ${user_id}. Error: ${err}`);
+      throw new Error(`Could not get reservations for user_id ${user_id}. Error: ${err}`);
     }
   }
 
+  static async getReservationsByMatchId(match_id: number): Promise<reservation[] | null> { try {
+      const sql = 'SELECT * FROM reservations WHERE match_id = $1';
+      const result = await client.query(sql, [match_id]);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get reservations for match_id ${match_id}. Error: ${err}`);
+    }
+  }
 
   static async getReservationById(ticket_id: number): Promise<reservation | null> {
     try {

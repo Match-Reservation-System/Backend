@@ -7,15 +7,7 @@ const getUserTickets = async (req: Request, res: Response) => {
     //TODO: check for auth user 
     const user_id = Number(req.params.user_id);
     const tickets = await Reservation.getReservationsByUserId(user_id);
-    if (!tickets) {
-      res
-        .status(401)
-        .json({ error: 'Invalid credentials user does not exist' });
-      return;
-    }
-    else {
-        res.json({tickets: tickets})
-    }
+    res.json({tickets: tickets})
   } catch (err: unknown) {
     const typedError = err as Error;
     res.status(401).json({ error: typedError?.message });
@@ -40,4 +32,16 @@ const deleteTicket = async (req: Request, res: Response) => {
   }
 };
 
-export { getUserTickets, deleteTicket };
+const getMatchTickets = async (req: Request, res: Response) => {
+  try {
+    //TODO: check for auth user 
+    const match_id = Number(req.params.match_id);
+    const tickets = await Reservation.getReservationsByMatchId(match_id);
+    res.json({tickets: tickets})
+  } catch (err: unknown) {
+    const typedError = err as Error;
+    res.status(401).json({ error: typedError?.message });
+  }
+};
+
+export { getUserTickets, deleteTicket, getMatchTickets };
