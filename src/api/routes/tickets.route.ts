@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getUserTickets, deleteTicket, getMatchTickets, reserveTicket } from "../controllers/tickets.controller";
-import verifyAuthToken from "../services/verifyAuth";
+
 
 
 const ticketsRouter = Router();

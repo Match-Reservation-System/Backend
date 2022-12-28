@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import Reservation from '../models/reservation.model';
-import validateLoginData from '../utils/validations/loginValidation';
 
 const getUserTickets = async (req: Request, res: Response) => {
   try {
