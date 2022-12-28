@@ -1,5 +1,5 @@
 export type reservation = {
-    id: number,
+    id?: number,
     match_id: number,
     row: number,
     seat: number,

@@ -7,7 +7,7 @@ class Reservation {
     user_id: number
   ): Promise<reservation[] | null> {
     try {
-      const sql = 'SELECT * FROM reservations WHERE user_id = $1';
+      const sql = 'SELECT id, match_id, row, seat FROM reservations WHERE user_id = $1';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
@@ -21,7 +21,7 @@ class Reservation {
     match_id: number
   ): Promise<reservation[] | null> {
     try {
-      const sql = 'SELECT * FROM reservations WHERE match_id = $1';
+      const sql = 'SELECT id, match_id, row, seat FROM reservations WHERE match_id = $1';
       const result = await client.query(sql, [match_id]);
       return result.rows;
     } catch (err) {
@@ -40,7 +40,7 @@ class Reservation {
       return result.rows[0];
     } catch (err) {
       throw new Error(
-        `Could not delete the reservation with id ${ticket_id}. Error: ${err}`
+        `Could not get the reservation with id ${ticket_id}. Error: ${err}`
       );
     }
   }

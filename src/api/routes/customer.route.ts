@@ -1,13 +1,16 @@
 import { Router } from "express";
-import { getUserTickets, deleteTicket, getMatchTickets, reserveTicket } from "../controllers/customer.controller";
+import { getUserTickets, deleteTicket, getReservedSeats, reserveTicket } from "../controllers/customer.controller";
+import verifyAuthToken from "../services/verifyAuth";
+import verifyRole from "../services/verifyRole";
+import { fan } from "../../roles/roles";
 
 //TODO: add authentication and authorization middlewares
 
 const customerRouter = Router();
 
-customerRouter.get('/fan/:user_id', getUserTickets);
-customerRouter.delete('/fan/:ticket_id', deleteTicket);
-customerRouter.get('/match/:match_id', getMatchTickets); //this is unauthorized
-customerRouter.post('/fan/reserve', reserveTicket);
+customerRouter.get('/fan/:user_id', verifyAuthToken, verifyRole(fan), getUserTickets);
+customerRouter.delete('/fan/:ticket_id', verifyAuthToken, verifyRole(fan), deleteTicket);
+customerRouter.get('/match/:match_id', getReservedSeats);
+customerRouter.post('/fan/reserve', verifyAuthToken, verifyRole(fan), reserveTicket);
 
 export default customerRouter;

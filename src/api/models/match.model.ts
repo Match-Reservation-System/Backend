@@ -21,6 +21,21 @@ class Match {
       throw new Error(`Could not add new match. Error: ${err}`);
     }
   }
+
+  static async getMatchById(
+    match_id: number
+  ): Promise<match | null> {
+    try {
+      const sql = 'select * FROM matches WHERE id = $1';
+      const result = await client.query(sql, [match_id]);
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(
+        `Could not get the match with id ${match_id}. Error: ${err}`
+      );
+    }
+  }
+
 }
 
 export default Match;
