@@ -1,5 +1,6 @@
 import client from '../../config/db/db';
 import { reservation } from '../../types/models/reservation';
+import ticketsRouter from '../routes/tickets.route';
 
 class Reservation {
 
@@ -9,7 +10,27 @@ class Reservation {
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not any reservations for user_id ${user_id}. Error: ${err}`);
+      throw new Error(`Could not find any reservations for user_id ${user_id}. Error: ${err}`);
+    }
+  }
+
+
+  static async getReservationById(ticket_id: number): Promise<reservation | null> {
+    try {
+      const sql = 'select * FROM reservations WHERE id = $1';
+      const result = await client.query(sql, [ticket_id]);
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not delete the reservation with id ${ticket_id}. Error: ${err}`);
+    }
+  }
+
+  static async deleteReservationByID(ticket_id: number) {
+    try {
+      const sql = 'DELETE FROM reservations WHERE id = $1';
+      const result = await client.query(sql, [ticket_id]);
+    } catch (err) {
+      throw new Error(`Could not delete the reservation with id ${ticket_id}. Error: ${err}`);
     }
   }
 

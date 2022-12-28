@@ -4,7 +4,8 @@ import validateLoginData from '../utils/validations/loginValidation';
 
 const getUserTickets = async (req: Request, res: Response) => {
   try {
-    const user_id = Number(req.query.user_id);
+    //TODO: check for auth user 
+    const user_id = Number(req.params.user_id);
     const tickets = await Reservation.getReservationsByUserId(user_id);
     if (!tickets) {
       res
@@ -21,4 +22,22 @@ const getUserTickets = async (req: Request, res: Response) => {
   }
 };
 
-export default getUserTickets;
+const deleteTicket = async (req: Request, res: Response) => {
+  try {
+    const ticket_id = Number(req.params.ticket_id);
+    const ticket = await Reservation.getReservationById(ticket_id);
+    //TODO: check for auth user 
+    if (!ticket)
+      return res.status(404).send({ err: 'Tickets not found or does not belong to this user.'});
+
+    //TODO: check for match starts after 3 days
+    await Reservation.deleteReservationByID(ticket_id);
+
+    res.json(`Deleted ticket with id ${ticket_id}`);
+  } catch (err: unknown) {
+    const typedError = err as Error;
+    res.status(401).json({ error: typedError?.message });
+  }
+};
+
+export { getUserTickets, deleteTicket };
