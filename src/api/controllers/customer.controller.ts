@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { copyFileSync } from 'fs';
+import { nextTick } from 'process';
 import Match from '../models/match.model';
 import Reservation from '../models/reservation.model';
+import { reservation } from '../types/models/reservation';
+import validateReservationData from '../utils/validations/reserveTicketValidation';
 
 const getUserTickets = async (req: Request, res: Response) => {
   try {
@@ -32,7 +35,7 @@ const deleteTicket = async (req: Request, res: Response) => {
     
     const match = await Match.getMatchById(ticket.match_id);
     if(match==null)
-      return;
+      return res.status(404).send({ err: 'Match not found.'});
     
     const days_before_match = (match.date.getTime() - Date.now()) / (1000*3600*24)
     console.log(days_before_match);
@@ -63,14 +66,39 @@ const getReservedSeats = async (req: Request, res: Response) => {
 
 const reserveTicket = async (req: Request, res: Response) => {
   try {
-    //TODO: add validations
-    //TODO: check for auth user 
-    req.body.user_id = 1;
-    const result = await Reservation.createReservation(req.body);
+    const { error } = validateReservationData(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    req.body.user_id = req.user;
+
     //TODO: check if in the boundaries of the stadium
     //TODO: check if the seat is not reserved already (can be skipped but message will be a db generated message)
-    //TODO: check if he did not reserve a ticket for a match with conflict time
     //TODO: we might add stripe payment here 
+
+    //check if he did not reserve a ticket for a match with conflict time
+    const match = await Match.getMatchById(req.body.match_id);
+    if(match==null)
+      return res.status(404).send({ err: 'Match not found.'});
+
+    const dates = await Match.getUserReservedMatches(Number(req.user));
+    for(let i in dates)
+    {
+      const id = dates[Number(i)]['id'];
+      if(id==match.id)
+        continue;
+        
+      const date = dates[Number(i)]['date'];
+      const start1 = date.getTime(), end1 = date.getTime() + 2 * 60 * 60 * 1000;
+      const start2 = match.date.getTime(), end2 = match.date.getTime() + 2 * 60 * 60 * 1000;
+
+      if(start1>end2 || end1<start2)
+        continue;
+
+      return res.status(400).send({ err: 'can not reserve, match conflicts with another reserved one.'});
+    }
+
+    const result = await Reservation.createReservation(req.body);
+
     res.json({ticket_id: result.id});
   } catch (err: unknown) {
     const typedError = err as Error;

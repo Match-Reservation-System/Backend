@@ -36,6 +36,20 @@ class Match {
     }
   }
 
+  static async getUserReservedMatches(
+    user_id: number
+  ): Promise<match[] | null> {
+    try {
+      const sql = 'select matches.id, matches.date FROM matches, reservations WHERE reservations.match_id =  matches.id and reservations.user_id = $1';
+      const result = await client.query(sql, [user_id]);
+      return result.rows;
+    } catch (err) {
+      throw new Error(
+        `Could not get dates of the user with id ${user_id}. Error: ${err}`
+      );
+    }
+  }
+
 }
 
 export default Match;
