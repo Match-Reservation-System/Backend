@@ -63,7 +63,8 @@ class User {
   }
   static async getAllUsers(): Promise<user[]> {
     try {
-      const sql = "SELECT id,user_name,email,role FROM users WHERE role != 'admin'";
+      const sql =
+        "SELECT id,user_name,email,role FROM users WHERE role != 'admin'";
       const result = await client.query(sql);
       return result.rows;
     } catch (err) {
@@ -80,25 +81,24 @@ class User {
       throw new Error(`Could not delete user ${id}. Error: ${err}`);
     }
   }
-  static async updateUser(id: number,user: user): Promise<user> {
+  static async updateUser(id: number, user: user): Promise<user> {
     try {
       const sql =
         'UPDATE users SET first_name = $1, last_name = $2, password = $3, gender = $4, nationality = $5, birth_date = $6 WHERE id = $7 RETURNING id,first_name,last_name,gender,nationality,birth_date';
-      const result = await client.query(sql, [ 
-        user.first_name, 
-        user.last_name, 
-        user.password, 
+      const result = await client.query(sql, [
+        user.first_name,
+        user.last_name,
+        user.password,
         user.gender,
         user.nationality,
         user.birth_date,
-        id
+        id,
       ]);
       return result.rows[0];
     } catch (err) {
       throw new Error(`Could not update user ${user.id}. Error: ${err}`);
     }
   }
-        
 }
 
 export default User;
