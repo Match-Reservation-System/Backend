@@ -6,8 +6,7 @@ class Reservation {
     user_id: number
   ): Promise<reservation[] | null> {
     try {
-      const sql =
-        'SELECT id, match_id, row, seat FROM reservations WHERE user_id = $1';
+      const sql = 'SELECT r.id as ticket_id, row, seat, match_id, stadium_id, date, home_team, away_team, main_referee, first_line_referee, second_line_referee, ticket_price  FROM matches as m, reservations as r WHERE user_id = $1 AND m.id = r.match_id';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
