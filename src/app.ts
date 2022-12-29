@@ -9,10 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-if(process.env.ENV == 'dev') {
+if (process.env.ENV == 'dev') {
   app.use(morgan('dev'));
 }
-
 
 app.use('/api', router);
 

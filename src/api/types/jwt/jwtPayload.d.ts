@@ -1,4 +1,4 @@
 export default interface JwtPayload {
-    user: string | number;
-    role: string;
+  user: string | number;
+  role: string;
 }

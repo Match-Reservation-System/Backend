@@ -1,18 +1,18 @@
 import client from '../../config/db/db';
 import { reservation } from '../types/models/reservation';
 
-
 class Reservation {
   static async getReservationsByUserId(
     user_id: number
   ): Promise<reservation[] | null> {
     try {
-      const sql = 'SELECT id, match_id, row, seat FROM reservations WHERE user_id = $1';
+      const sql =
+        'SELECT id, match_id, row, seat FROM reservations WHERE user_id = $1';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
       throw new Error(
-        `Could not get reservations for user_id ${user_id}. Error: ${err}`
+        `Could not get reservations for user_id ${user_id}.  ${err}`
       );
     }
   }
@@ -21,12 +21,13 @@ class Reservation {
     match_id: number
   ): Promise<reservation[] | null> {
     try {
-      const sql = 'SELECT id, match_id, row, seat FROM reservations WHERE match_id = $1';
+      const sql =
+        'SELECT id, match_id, row, seat FROM reservations WHERE match_id = $1';
       const result = await client.query(sql, [match_id]);
       return result.rows;
     } catch (err) {
       throw new Error(
-        `Could not get reservations for match_id ${match_id}. Error: ${err}`
+        `Could not get reservations for match_id ${match_id}.  ${err}`
       );
     }
   }
@@ -40,18 +41,20 @@ class Reservation {
       return result.rows[0];
     } catch (err) {
       throw new Error(
-        `Could not get the reservation with id ${ticket_id}. Error: ${err}`
+        `Could not get the reservation with id ${ticket_id}.  ${err}`
       );
     }
   }
 
   static async deleteReservationByID(ticket_id: number) {
+    //TODO: return the deleted reservation
     try {
       const sql = 'DELETE FROM reservations WHERE id = $1';
       const result = await client.query(sql, [ticket_id]);
+      return result.rows[0];
     } catch (err) {
       throw new Error(
-        `Could not delete the reservation with id ${ticket_id}. Error: ${err}`
+        `Could not delete the reservation with id ${ticket_id}.  ${err}`
       );
     }
   }
@@ -68,7 +71,7 @@ class Reservation {
       ]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not add new reservation. Error: ${err}`);
+      throw new Error(`Could not add new reservation. ${err}`);
     }
   }
 }

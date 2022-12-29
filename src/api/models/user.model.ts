@@ -8,7 +8,7 @@ class User {
       const result = await client.query(sql, [email]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find user ${email}. Error: ${err}`);
+      throw new Error(`Could not find user ${email}.  ${err}`);
     }
   }
   static async getUserById(id: number): Promise<user | null> {
@@ -17,7 +17,7 @@ class User {
       const result = await client.query(sql, [id]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find user ${id}. Error: ${err}`);
+      throw new Error(`Could not find user ${id}.  ${err}`);
     }
   }
   static async createUser(user: user): Promise<user> {
@@ -48,7 +48,7 @@ class User {
       const result = await client.query(sql, [id]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not verify user ${id}. Error: ${err}`);
+      throw new Error(`Could not verify user ${id}. ${err}`);
     }
   }
   static async getUnverifiedManagers(): Promise<user[]> {
@@ -58,7 +58,7 @@ class User {
       const result = await client.query(sql);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not get unverified users. Error: ${err}`);
+      throw new Error(`Could not get unverified users. ${err}`);
     }
   }
   static async getAllUsers(): Promise<user[]> {
@@ -68,7 +68,7 @@ class User {
       const result = await client.query(sql);
       return result.rows;
     } catch (err) {
-      throw new Error(`Could not get all users. Error: ${err}`);
+      throw new Error(`Could not get all users.  ${err}`);
     }
   }
   static async deleteUser(id: number): Promise<user> {
@@ -78,10 +78,10 @@ class User {
       const result = await client.query(sql, [id]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not delete user ${id}. Error: ${err}`);
+      throw new Error(`Could not delete user ${id}.  ${err}`);
     }
   }
-  static async updateUser(id: number, user: user): Promise<user> {
+  static async updateUser(user: user): Promise<user> {
     try {
       const sql =
         'UPDATE users SET first_name = $1, last_name = $2, password = $3, gender = $4, nationality = $5, birth_date = $6 WHERE id = $7 RETURNING id,first_name,last_name,gender,nationality,birth_date';
@@ -92,11 +92,11 @@ class User {
         user.gender,
         user.nationality,
         user.birth_date,
-        id,
+        user.id,
       ]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not update user ${user.id}. Error: ${err}`);
+      throw new Error(`Could not update user ${user.id}.  ${err}`);
     }
   }
 }

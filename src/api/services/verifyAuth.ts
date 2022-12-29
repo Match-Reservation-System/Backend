@@ -10,7 +10,10 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     const token = authorizationHeader.split(' ')[1];
-    const {user, role } = jwt.verify(token, process.env.JWT_PRIVATE_KEY as string) as JwtPayload;
+    const { user, role } = jwt.verify(
+      token,
+      process.env.JWT_PRIVATE_KEY as string
+    ) as JwtPayload;
     req.user = user;
     req.role = role;
     next();

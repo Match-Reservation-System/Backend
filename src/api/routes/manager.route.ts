@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { createMatch, updateMatch } from "../controllers/manager.controller";
-import verifyAuthToken from "../services/verifyAuth";
-import verifyRole from "../services/verifyRole";
-import { manager } from "../../roles/roles";
+import { Router } from 'express';
+import { createMatch, updateMatch } from '../controllers/manager.controller';
+import verifyAuthToken from '../services/verifyAuth';
+import verifyRole from '../services/verifyRole';
+import { manager } from '../../roles/roles';
 
 const managerRouter = Router();
 

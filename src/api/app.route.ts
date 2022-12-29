@@ -13,6 +13,6 @@ router.use('/signup', signupRouter);
 router.use('/customer', customerRouter);
 router.use('/admin', adminRouter);
 
-router.use('/manager', managerRouter)
+router.use('/manager', managerRouter);
 
 export default router;

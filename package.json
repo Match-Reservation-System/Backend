@@ -15,7 +15,7 @@
     "docker:startDev": "docker-compose --env-file .env up db_dev -d",
     "start:dev": "npm run docker:startDev && nodemon src/app.ts",
     "start": "npm run docker:startDev && npm run build && node dist/app.js",
-    "lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
+    "lint": "eslint --ignore-path .gitignore --ext \"**/*.{ts,tsx}\"",
     "format": "prettier --ignore-path .gitignore --config .prettierrc --write \"**/*.+(js|ts|json)\"",
     "fix": "eslint --fix src/**/*.{ts,js,json,md}"
   },

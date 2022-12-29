@@ -32,13 +32,12 @@ const signup = async (req: Request, res: Response) => {
       ...req.body,
       password: hashedPassword,
     };
-    console.log(newUser);
     const createdUser = await User.createUser(newUser);
-    if(req.body.role === 'fan'){
-          const token = getToken(createdUser.id, createdUser.role);
-          return res.status(201).json({ token, user: createdUser });
-    }else{
-          return res.status(201).json({ user: createdUser });
+    if (req.body.role === 'fan') {
+      const token = getToken(createdUser.id, createdUser.role);
+      return res.status(201).json({ token, user: createdUser });
+    } else {
+      return res.status(201).json({ user: createdUser });
     }
   } catch (err: unknown) {
     const typedError = err as Error;

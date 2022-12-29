@@ -2,7 +2,6 @@ import client from '../../config/db/db';
 import { match } from '../types/models/match';
 
 class Match {
-  
   static async createMatch(match: match): Promise<match> {
     try {
       const sql =
@@ -15,11 +14,11 @@ class Match {
         match.main_referee,
         match.first_line_referee,
         match.second_line_referee,
-        match.ticket_price
+        match.ticket_price,
       ]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not add new match. Error: ${err}`);
+      throw new Error(`Could not add new match.  ${err}`);
     }
   }
 
@@ -36,24 +35,21 @@ class Match {
         match.main_referee,
         match.first_line_referee,
         match.second_line_referee,
-        match.ticket_price
+        match.ticket_price,
       ]);
+      return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not update match. Error: ${err}`);
+      throw new Error(`Could not update match.  ${err}`);
     }
   }
 
-  static async getMatchById(
-    match_id: number
-  ): Promise<match | null> {
+  static async getMatchById(match_id: number): Promise<match | null> {
     try {
       const sql = 'select * FROM matches WHERE id = $1';
       const result = await client.query(sql, [match_id]);
       return result.rows[0];
     } catch (err) {
-      throw new Error(
-        `Could not get the match with id ${match_id}. Error: ${err}`
-      );
+      throw new Error(`Could not get the match with id ${match_id}.  ${err}`);
     }
   }
 
@@ -61,30 +57,29 @@ class Match {
     user_id: number
   ): Promise<match[] | null> {
     try {
-      const sql = 'select matches.id, matches.date FROM matches, reservations WHERE reservations.match_id =  matches.id and reservations.user_id = $1';
+      const sql =
+        'select matches.id, matches.date FROM matches, reservations WHERE reservations.match_id =  matches.id and reservations.user_id = $1';
       const result = await client.query(sql, [user_id]);
       return result.rows;
     } catch (err) {
       throw new Error(
-        `Could not get dates of the user with id ${user_id}. Error: ${err}`
+        `Could not get dates of the user with id ${user_id}.  ${err}`
       );
     }
   }
 
-  static async getTeamMatches(
-    team_name: string
-  ): Promise<match[] | null> {
+  static async getTeamMatches(team_name: string): Promise<match[] | null> {
     try {
-      const sql = 'select id, date FROM matches WHERE home_team = $1 OR away_team = $1';
+      const sql =
+        'select id, date FROM matches WHERE home_team = $1 OR away_team = $1';
       const result = await client.query(sql, [team_name]);
       return result.rows;
     } catch (err) {
       throw new Error(
-        `Could not get dates of the team with naem ${team_name}. Error: ${err}`
+        `Could not get dates of the team with name ${team_name}.  ${err}`
       );
     }
   }
-
 }
 
 export default Match;
