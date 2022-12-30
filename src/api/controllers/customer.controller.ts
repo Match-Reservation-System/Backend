@@ -7,6 +7,7 @@ import { user } from '../types/models/user';
 import hashPassword from '../utils/auth/hashPassword';
 import validateUpdateUserData from '../utils/validations/updateCustomerInfoValidation';
 
+
 const getUserTickets = async (req: Request, res: Response) => {
   try {
     const user_id = Number(req.params.user_id);
@@ -179,11 +180,13 @@ const updateCustomerInfo = async (req: Request, res: Response) => {
   }
 };
 
+
+
 export {
   getUserTickets,
   deleteTicket,
   getReservedSeats,
   reserveTicket,
   getCustomerInfo,
-  updateCustomerInfo,
+  updateCustomerInfo
 };

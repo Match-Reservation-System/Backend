@@ -80,6 +80,16 @@ class Match {
       );
     }
   }
+  static async getAllMatches(): Promise<match[] | null> {
+    try {
+      const sql = 'select * FROM matches';
+      const result = await
+      client.query(sql);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get matches.  ${err}`);
+    }
+  }
 }
 
 export default Match;
