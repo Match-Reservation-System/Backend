@@ -38,6 +38,15 @@ class Stadium {
       throw new Error(`Could not get stadium ${name} in ${city}. ${err}`);
     }
   }
+  static async getStadiumById(stadium_id: number): Promise<stadium | null> {
+    try{
+      const sql = 'SELECT * FROM stadiums WHERE id = $1';
+      const result = await client.query(sql, [stadium_id]);
+      return result.rows[0];
+    }catch(err){
+      throw new Error(`Could not get stadium with id ${stadium_id}. ${err}`);
+    }
+  }
 }
 
 export default Stadium;

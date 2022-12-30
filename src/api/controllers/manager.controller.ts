@@ -33,12 +33,26 @@ const createMatch = async (req: Request, res: Response) => {
           error: 'can not create, away team has another match at the same day.',
         });
     }
-
+    //check if stadium exists
+    const stadium = await Stadium.getStadiumById(req.body.stadium_id);
+    console.log(stadium);
+    if (!stadium) return res.status(404).send({ error: 'Stadium not found.' });
+    // get the yy/mm/dd of the req.body.date
+    const date = new Date(req.body.date);
+    const yy = date.getFullYear();
+    const mm = date.getMonth() + 1;
+    const dd = date.getDate();
+    const reservedStadium = await Match.getStadiumMatchesWithDate(
+      req.body.stadium_id,
+      `${yy}-${mm}-${dd}`
+    );
+    if (reservedStadium.length > 0) {
+      return res.status(400).send({
+        error: 'can not create match, stadium is reserved at the same day.',
+      });
+    }
     const match_id = await Match.createMatch(req.body);
-
     res.json({ match_id: match_id['id'] });
-    //TODO: return new match details
-    //TODO: A stadium can hold 1 match at a maximum per day
   } catch (err: unknown) {
     const typedError = err as Error;
     res.status(401).json({ error: typedError?.message });
@@ -64,7 +78,7 @@ const updateMatch = async (req: Request, res: Response) => {
       const date = home_team_matches[Number(i)]['date'];
       if (date.toDateString() == current_match_date.toDateString())
         return res.status(400).send({
-          error: 'can not update, home team has another match at the same day.',
+          error: 'can not update match, home team has another match at the same day.',
         });
     }
 
@@ -78,12 +92,25 @@ const updateMatch = async (req: Request, res: Response) => {
           error: 'can not update, away team has another match at the same day.',
         });
     }
-
+    //check if stadium exists
+    const stadium = await Stadium.getStadiumById(req.body.stadium_id);
+    if (!stadium) return res.status(404).send({ error: 'Stadium not found.' });
+    // get the yy/mm/dd of the req.body.date
+    const date = new Date(req.body.date);
+    const yy = date.getFullYear();
+    const mm = date.getMonth() + 1;
+    const dd = date.getDate();
+    const reservedStadium = await Match.getStadiumMatchesWithDate(
+      req.body.stadium_id,
+      `${yy}-${mm}-${dd}`
+    );
+    if (reservedStadium.length > 0) {
+      return res.status(400).send({
+        error: 'can not update, stadium is reserved at the same day.',
+      });
+    }
     await Match.updateMatch(req.body);
-
     res.json({ message: `successfully updated match with id ${req.body.id}.` });
-    //TODO: return new match details
-    //TODO: A stadium can hold 1 match at a maximum per day
   } catch (err: unknown) {
     const typedError = err as Error;
     res.status(401).json({ error: typedError?.message });
@@ -104,7 +131,6 @@ const createStadium = async (req: Request, res: Response) => {
       return res.status(400).send({
         error: 'Stadium with the same name already exists in this location.',
       });
-
     const createdStadium = await Stadium.createStadium(newStadium);
     res.json({ stadium: createdStadium });
   } catch (err: unknown) {

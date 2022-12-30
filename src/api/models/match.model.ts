@@ -25,7 +25,7 @@ class Match {
   static async updateMatch(match: match) {
     try {
       const sql =
-        'UPDATE matches SET stadium_id = $2, date = $3, home_team = $4, away_team = $5, main_referee = $6, first_line_referee = $7, second_line_referee = $8, ticket_price = $9 WHERE id = $1';
+        'UPDATE matches SET stadium_id = $2, date = $3, home_team = $4, away_team = $5, main_referee = $6, first_line_referee = $7, second_line_referee = $8, ticket_price = $9 WHERE id = $1 RETURNING *';
       const result = await client.query(sql, [
         match.id,
         match.stadium_id,
@@ -84,6 +84,15 @@ class Match {
     try {
       const sql = 'select * FROM matches WHERE date >= $1';
       const result = await client.query(sql, [date]);
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Could not get matches.  ${err}`);
+    }
+  }
+  static async getStadiumMatchesWithDate( stadium_id: number, date: string): Promise<match[]> {
+    try {
+      const sql = 'select * FROM matches WHERE stadium_id = $1 AND DATE(date) = $2';
+      const result = await client.query(sql, [stadium_id, date]);
       return result.rows;
     } catch (err) {
       throw new Error(`Could not get matches.  ${err}`);
