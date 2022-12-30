@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/user.model';
 
 const verifyRole =
-  (role: string) =>async (req: Request, res: Response, next: NextFunction) => {
+  (role: string) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.role !== role) {
         res.status(403).json({ error: 'Unauthorized' });

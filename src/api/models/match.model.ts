@@ -89,9 +89,13 @@ class Match {
       throw new Error(`Could not get matches.  ${err}`);
     }
   }
-  static async getStadiumMatchesWithDate( stadium_id: number, date: string): Promise<match[]> {
+  static async getStadiumMatchesWithDate(
+    stadium_id: number,
+    date: string
+  ): Promise<match[]> {
     try {
-      const sql = 'select * FROM matches WHERE stadium_id = $1 AND DATE(date) = $2';
+      const sql =
+        'select * FROM matches WHERE stadium_id = $1 AND DATE(date) = $2';
       const result = await client.query(sql, [stadium_id, date]);
       return result.rows;
     } catch (err) {

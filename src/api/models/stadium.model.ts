@@ -39,11 +39,11 @@ class Stadium {
     }
   }
   static async getStadiumById(stadium_id: number): Promise<stadium | null> {
-    try{
+    try {
       const sql = 'SELECT * FROM stadiums WHERE id = $1';
       const result = await client.query(sql, [stadium_id]);
       return result.rows[0];
-    }catch(err){
+    } catch (err) {
       throw new Error(`Could not get stadium with id ${stadium_id}. ${err}`);
     }
   }

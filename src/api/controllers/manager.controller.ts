@@ -76,7 +76,8 @@ const updateMatch = async (req: Request, res: Response) => {
       const date = home_team_matches[Number(i)]['date'];
       if (date.toDateString() == current_match_date.toDateString())
         return res.status(400).send({
-          error: 'can not update match, home team has another match at the same day.',
+          error:
+            'can not update match, home team has another match at the same day.',
         });
     }
 

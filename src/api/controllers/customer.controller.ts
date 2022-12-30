@@ -7,7 +7,6 @@ import { user } from '../types/models/user';
 import hashPassword from '../utils/auth/hashPassword';
 import validateUpdateUserData from '../utils/validations/updateCustomerInfoValidation';
 
-
 const getUserTickets = async (req: Request, res: Response) => {
   try {
     const user_id = Number(req.params.user_id);
@@ -84,9 +83,14 @@ const reserveTicket = async (req: Request, res: Response) => {
 
     // check if in the boundaries of the stadium
     //check if the seat is not reserved already
-    const tickets = await Reservation.getReservationsByMatchId( req.body.match_id);
+    const tickets = await Reservation.getReservationsByMatchId(
+      req.body.match_id
+    );
     for (const i in tickets) {
-      if (tickets[Number(i)]['seat'] == req.body.seat && tickets[Number(i)]['row'] == req.body.row)
+      if (
+        tickets[Number(i)]['seat'] == req.body.seat &&
+        tickets[Number(i)]['row'] == req.body.row
+      )
         return res.status(400).send({ error: 'Seat is already reserved.' });
     }
     //check if he did not reserve a ticket for a match with conflict time
@@ -185,13 +189,11 @@ const updateCustomerInfo = async (req: Request, res: Response) => {
   }
 };
 
-
-
 export {
   getUserTickets,
   deleteTicket,
   getReservedSeats,
   reserveTicket,
   getCustomerInfo,
-  updateCustomerInfo
+  updateCustomerInfo,
 };
