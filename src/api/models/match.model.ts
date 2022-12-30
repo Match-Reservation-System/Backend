@@ -80,11 +80,10 @@ class Match {
       );
     }
   }
-  static async getAllMatches(): Promise<match[] | null> {
+  static async getAllMatchesByDate(date: string): Promise<match[] | null> {
     try {
-      const sql = 'select * FROM matches';
-      const result = await
-      client.query(sql);
+      const sql = 'select * FROM matches WHERE date >= $1';
+      const result = await client.query(sql, [date]);
       return result.rows;
     } catch (err) {
       throw new Error(`Could not get matches.  ${err}`);
