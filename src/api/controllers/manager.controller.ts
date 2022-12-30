@@ -4,6 +4,9 @@ import {
   validateMatchData,
   validateMatchWithIdData,
 } from '../utils/validations/managerValidation';
+import createStadiumValidations from '../utils/validations/createStadiumValidations';
+import Stadium from '../models/stadium.model';
+import stadium from '../types/models/stadium';
 
 const createMatch = async (req: Request, res: Response) => {
   try {
@@ -87,4 +90,37 @@ const updateMatch = async (req: Request, res: Response) => {
   }
 };
 
-export { createMatch, updateMatch };
+const createStadium = async (req: Request, res: Response) => {
+  try {
+    const { error } = createStadiumValidations(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+    // if the name is already taken in the same city return error
+    const newStadium: stadium = req.body;
+    const existingStadium = await Stadium.getStadiumByNameAndCity(
+      newStadium.name,
+      newStadium.city
+    );
+    if (existingStadium)
+      return res.status(400).send({
+        error: 'Stadium with the same name already exists in this location.',
+      });
+
+    const createdStadium = await Stadium.createStadium(newStadium);
+    res.json({ stadium: createdStadium });
+  } catch (err: unknown) {
+    const typedError = err as Error;
+    res.status(401).json({ error: typedError?.message });
+  }
+};
+
+const getStadiums = async (req: Request, res: Response) => {
+  try {
+    const stadiums = await Stadium.getStadiums();
+    res.json({ stadiums: stadiums });
+  } catch (err: unknown) {
+    const typedError = err as Error;
+    res.status(401).json({ error: typedError?.message });
+  }
+};
+
+export { createMatch, updateMatch, createStadium, getStadiums };

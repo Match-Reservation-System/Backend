@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import User from '../models/user.model';
 import validateSignupData from '../utils/validations/signupValidation';
-import getToken from '../utils/createToken';
-import hashPassword from '../utils/hashPassword';
+import getToken from '../utils/auth/createToken';
+import hashPassword from '../utils/auth/hashPassword';
 
 const signup = async (req: Request, res: Response) => {
   try {

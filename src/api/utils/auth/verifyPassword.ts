@@ -1,5 +1,5 @@
 import { compareSync } from 'bcrypt';
-import User from '../models/user.model';
+import User from '../../models/user.model';
 
 const verifyPassword = async (email: string, password: string) => {
   try {

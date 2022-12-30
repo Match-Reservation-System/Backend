@@ -4,7 +4,7 @@ import Reservation from '../models/reservation.model';
 import validateReservationData from '../utils/validations/reserveTicketValidation';
 import User from '../models/user.model';
 import { user } from '../types/models/user';
-import hashPassword from '../utils/hashPassword';
+import hashPassword from '../utils/auth/hashPassword';
 import validateUpdateUserData from '../utils/validations/updateCustomerInfoValidation';
 
 const getUserTickets = async (req: Request, res: Response) => {

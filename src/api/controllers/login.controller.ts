@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import getToken from '../utils/createToken';
+import getToken from '../utils/auth/createToken';
 import User from '../models/user.model';
-import verifyPassword from '../utils/verifyPassword';
+import verifyPassword from '../utils/auth/verifyPassword';
 import validateLoginData from '../utils/validations/loginValidation';
 
 const login = async (req: Request, res: Response) => {
