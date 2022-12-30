@@ -19,10 +19,10 @@ class Reservation {
 
   static async getReservationsByMatchId(
     match_id: number
-  ): Promise<reservation[] | null> {
+  ): Promise<reservation[]> {
     try {
       const sql =
-        'SELECT match_id, r.id as ticket_id, row, seat, stadium_id, date, home_team, away_team, main_referee, first_line_referee, second_line_referee, ticket_price  FROM matches as m, reservations as r WHERE match_id = $1 AND m.id = r.match_id';
+        'SELECT row, seat FROM matches as m, reservations as r WHERE match_id = $1 AND m.id = r.match_id';
       const result = await client.query(sql, [match_id]);
       return result.rows;
     } catch (err) {

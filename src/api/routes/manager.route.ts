@@ -5,6 +5,7 @@ import {
   createStadium,
   getStadiums,
 } from '../controllers/manager.controller';
+import { getReservedSeats } from '../controllers/customer.controller';
 import verifyAuthToken from '../services/verifyAuth';
 import verifyRole from '../services/verifyRole';
 import { manager } from '../../roles/roles';
@@ -24,6 +25,12 @@ managerRouter.get(
   verifyAuthToken,
   verifyRole(manager),
   getStadiums
+);
+managerRouter.get(
+  '/match/:match_id',
+  verifyAuthToken,
+  verifyRole(manager),
+  getReservedSeats
 );
 
 export default managerRouter;

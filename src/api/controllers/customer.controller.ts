@@ -44,8 +44,6 @@ const deleteTicket = async (req: Request, res: Response) => {
 
     const days_before_match =
       (match.date.getTime() - Date.now()) / (1000 * 3600 * 24);
-    console.log(days_before_match);
-
     if (days_before_match < 3)
       return res
         .status(400)
@@ -65,8 +63,12 @@ const getReservedSeats = async (req: Request, res: Response) => {
     const match_id = Number(req.params.match_id);
     if (isNaN(match_id))
       return res.status(400).send({ error: 'Invalid match id.' });
+    //check if the match exists
+    const match = await Match.getMatchById(match_id);
+    if (match == null)
+      return res.status(404).send({ error: 'Match not found.' });
     const tickets = await Reservation.getReservationsByMatchId(match_id);
-    res.json({ tickets: tickets });
+    res.json({ reserved_seats: tickets });
   } catch (err: unknown) {
     const typedError = err as Error;
     res.status(401).json({ error: typedError?.message });
@@ -80,10 +82,13 @@ const reserveTicket = async (req: Request, res: Response) => {
 
     req.body.user_id = req.user;
 
-    //TODO: check if in the boundaries of the stadium
-    //TODO: check if the seat is not reserved already (can be skipped but message will be a db generated message)
-    //TODO: we might add stripe payment here
-
+    // check if in the boundaries of the stadium
+    //check if the seat is not reserved already
+    const tickets = await Reservation.getReservationsByMatchId( req.body.match_id);
+    for (const i in tickets) {
+      if (tickets[Number(i)]['seat'] == req.body.seat && tickets[Number(i)]['row'] == req.body.row)
+        return res.status(400).send({ error: 'Seat is already reserved.' });
+    }
     //check if he did not reserve a ticket for a match with conflict time
     const match = await Match.getMatchById(req.body.match_id);
     if (match == null)

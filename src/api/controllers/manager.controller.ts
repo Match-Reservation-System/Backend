@@ -35,7 +35,6 @@ const createMatch = async (req: Request, res: Response) => {
     }
     //check if stadium exists
     const stadium = await Stadium.getStadiumById(req.body.stadium_id);
-    console.log(stadium);
     if (!stadium) return res.status(404).send({ error: 'Stadium not found.' });
     // get the yy/mm/dd of the req.body.date
     const date = new Date(req.body.date);
@@ -65,7 +64,6 @@ const updateMatch = async (req: Request, res: Response) => {
     if (error) return res.status(400).json({ error: error.details[0].message });
 
     const match = await Match.getMatchById(req.body.id);
-    console.log(match);
     if (!match) return res.status(404).send({ error: 'Match not found.' });
 
     const current_match_date = new Date(req.body.date);
