@@ -53,6 +53,15 @@ class Match {
       throw new Error(`Could not get the match with id ${match_id}.  ${err}`);
     }
   }
+  static async getMatchId(match_id: number): Promise<match | null> {
+    try {
+      const sql = 'select * FROM matches WHERE id = $1';
+      const result = await client.query(sql, [match_id]);
+      return result.rows[0];
+    } catch (err) {
+      throw new Error(`Could not get the match with id ${match_id}.  ${err}`);
+    }
+  }
 
   static async getUserReservedMatches(
     user_id: number

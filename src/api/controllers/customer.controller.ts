@@ -94,7 +94,7 @@ const reserveTicket = async (req: Request, res: Response) => {
         return res.status(400).send({ error: 'Seat is already reserved.' });
     }
     //check if he did not reserve a ticket for a match with conflict time
-    const match = await Match.getMatchById(req.body.match_id);
+    const match = await Match.getMatchId(req.body.match_id);
     if (match == null)
       return res.status(404).send({ error: 'Match not found.' });
 
