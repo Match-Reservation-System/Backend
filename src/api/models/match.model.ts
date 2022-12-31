@@ -82,7 +82,7 @@ class Match {
   }
   static async getAllMatchesByDate(date: string): Promise<match[] | null> {
     try {
-      const sql = 'select * FROM matches WHERE date >= $1';
+      const sql = 'select *,M.id match_id FROM matches M JOIN stadiums S ON M.stadium_id=S.id  WHERE date >= $1';
       const result = await client.query(sql, [date]);
       return result.rows;
     } catch (err) {
