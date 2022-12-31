@@ -22,7 +22,7 @@ class Reservation {
   ): Promise<reservation[]> {
     try {
       const sql =
-        'SELECT row, seat FROM matches as m, reservations as r WHERE match_id = $1 AND m.id = r.match_id';
+        'SELECT row,seat,s.id stadium_id,name,city,rows,seats_per_row FROM matches as m JOIN stadiums s on m.stadium_id=s.id, reservations as r WHERE match_id = $1 AND m.id = r.match_id';
       const result = await client.query(sql, [match_id]);
       return result.rows;
     } catch (err) {
