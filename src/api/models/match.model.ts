@@ -46,7 +46,7 @@ class Match {
   static async getMatchById(match_id: number): Promise<match | null> {
     try {
       const sql =
-        'select * FROM matches M JOIN stadiums S ON M.stadium_id=S.id WHERE m.id = $1';
+        'select *,m.id match_id FROM matches M JOIN stadiums S ON M.stadium_id=S.id WHERE m.id = $1';
       const result = await client.query(sql, [match_id]);
       return result.rows[0];
     } catch (err) {
