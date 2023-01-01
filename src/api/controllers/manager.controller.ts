@@ -12,9 +12,12 @@ const createMatch = async (req: Request, res: Response) => {
   try {
     const { error } = validateMatchData(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
-
+    if (req.body.home_team === req.body.away_team) {
+      return res.status(400).send({
+        error: 'can not create, the two opponents cannot be the same.',
+      });
+    }
     const current_match_date = new Date(req.body.date);
-
     // A team can have at maximum one match per day
     const home_team_matches = await Match.getTeamMatches(req.body.home_team);
     for (const i in home_team_matches) {
@@ -62,7 +65,11 @@ const updateMatch = async (req: Request, res: Response) => {
   try {
     const { error } = validateMatchWithIdData(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
-
+    if (req.body.home_team === req.body.away_team) {
+      return res.status(400).send({
+        error: 'can not create, the two opponents cannot be the same.',
+      });
+    }
     const match = await Match.getMatchById(req.body.id);
     if (!match) return res.status(404).send({ error: 'Match not found.' });
 
