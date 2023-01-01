@@ -110,7 +110,8 @@ const updateMatch = async (req: Request, res: Response) => {
       req.body.stadium_id,
       `${yy}-${mm}-${dd}`
     );
-    if (reservedStadium.length > 0) {
+
+    if (reservedStadium.length > 0 && reservedStadium[0].stadium_id!=match.stadium_id) {
       return res.status(400).send({
         error: 'can not update, stadium is reserved at the same day.',
       });
